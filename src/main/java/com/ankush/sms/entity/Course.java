@@ -32,6 +32,7 @@ public class Course extends BaseEntity {
     private Integer duration;
 
     @ManyToMany(mappedBy = "courses")
+    @Builder.Default
     private Set<Student> students = new HashSet<>();
 
     @OneToMany(

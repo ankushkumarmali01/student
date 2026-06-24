@@ -45,6 +45,7 @@ public class Student extends BaseEntity {
     @Column(length = 100)
     private String parentName;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "student",
             cascade = CascadeType.ALL,
@@ -53,6 +54,7 @@ public class Student extends BaseEntity {
     )
     private List<Address> addresses = new ArrayList<>();
 
+    @Builder.Default
     @ManyToMany
     @JoinTable(
             name = "student_course",
@@ -60,5 +62,25 @@ public class Student extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private Set<Course> courses = new HashSet<>();
+
+    public void addAddress(Address address) {
+        addresses.add(address);
+        address.setStudent(this);
+    }
+
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+        address.setStudent(null);
+    }
+
+    public void addCourse(Course course) {
+        courses.add(course);
+        course.getStudents().add(this);
+    }
+
+    public void removeCourse(Course course) {
+        courses.remove(course);
+        course.getStudents().remove(this);
+    }
 
 }
