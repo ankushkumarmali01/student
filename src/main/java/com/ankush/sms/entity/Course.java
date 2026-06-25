@@ -41,6 +41,7 @@ public class Course extends BaseEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+    @Builder.Default
     private List<Topic> topics = new ArrayList<>();
 
 }

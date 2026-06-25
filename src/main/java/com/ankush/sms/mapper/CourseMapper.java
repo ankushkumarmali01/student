@@ -57,4 +57,13 @@ public class CourseMapper {
                         .collect(Collectors.toList()))
                 .build();
     }
+
+    public void updateEntity(Course course, CourseRequest request) {
+
+        course.setCourseName(request.getCourseName());
+        course.setDescription(request.getDescription());
+        course.setCourseType(request.getCourseType());
+        course.setDuration(request.getDuration());
+
+    }
 }

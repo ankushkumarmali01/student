@@ -89,6 +89,8 @@ public class GlobalExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .build();
 
+
+
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

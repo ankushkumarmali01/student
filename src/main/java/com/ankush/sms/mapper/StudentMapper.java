@@ -1,5 +1,6 @@
 package com.ankush.sms.mapper;
 
+import com.ankush.sms.dto.request.StudentProfileUpdateRequest;
 import com.ankush.sms.dto.request.StudentRequest;
 import com.ankush.sms.dto.response.StudentResponse;
 import com.ankush.sms.entity.Address;
@@ -68,4 +69,35 @@ public class StudentMapper {
                         .collect(Collectors.toList()))
                 .build();
     }
+
+    public void updateEntity(Student student, StudentRequest request) {
+
+        student.setName(request.getName());
+        student.setDob(request.getDob());
+        student.setGender(request.getGender());
+        student.setStudentCode(request.getStudentCode());
+        student.setEmail(request.getEmail());
+        student.setMobile(request.getMobile());
+        student.setParentName(request.getParentName());
+    }
+
+    public void updateProfile(
+            Student student,
+            StudentProfileUpdateRequest request) {
+
+        student.setEmail(request.getEmail());
+        student.setMobile(request.getMobile());
+        student.setParentName(request.getParentName());
+
+        if (request.getAddresses() != null) {
+
+            student.getAddresses().clear();
+
+            request.getAddresses()
+                    .stream()
+                    .map(addressMapper::toEntity)
+                    .forEach(student::addAddress);
+        }
+    }
+
 }

@@ -74,12 +74,12 @@ public class Student extends BaseEntity {
     }
 
     public void addCourse(Course course) {
-        courses.add(course);
+        this.courses.add(course);
         course.getStudents().add(this);
     }
 
     public void removeCourse(Course course) {
-        courses.remove(course);
+        this.courses.remove(course);
         course.getStudents().remove(this);
     }
 
