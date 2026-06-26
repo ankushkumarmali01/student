@@ -46,11 +46,10 @@ public class AdminServiceImpl implements AdminService {
     private final CourseMapper courseMapper;
     private final TopicMapper topicMapper;
 
-    /**
-     * -------------------------
-     * ADMIN LOGIN
-     * -------------------------
-     */
+    // =====================================================
+    // Admin Login
+    // =====================================================
+
     @Override
     public LoginResponse login(AdminLoginRequest request) {
 
@@ -76,6 +75,10 @@ public class AdminServiceImpl implements AdminService {
                         .getAuthority())
                 .build();
     }
+
+    // =====================================================
+    // Create Student
+    // =====================================================
 
     @Override
     @Transactional
@@ -106,6 +109,10 @@ public class AdminServiceImpl implements AdminService {
 
         return studentMapper.toResponse(savedStudent);
     }
+
+    // =====================================================
+    // Update Student
+    // =====================================================
 
     @Override
     @Transactional
@@ -150,6 +157,10 @@ public class AdminServiceImpl implements AdminService {
         return studentMapper.toResponse(updatedStudent);
     }
 
+    // =====================================================
+    // Delete Student
+    // =====================================================
+
     @Override
     @Transactional
     public void deleteStudent(Long id) {
@@ -163,6 +174,10 @@ public class AdminServiceImpl implements AdminService {
         log.info("Student deleted successfully.");
     }
 
+    // =====================================================
+    // Get Student By Id
+    // =====================================================
+
     @Override
     @Transactional(readOnly = true)
     public StudentResponse getStudentById(Long id) {
@@ -173,6 +188,10 @@ public class AdminServiceImpl implements AdminService {
 
         return studentMapper.toResponse(student);
     }
+
+    // =====================================================
+    // Get All Students
+    // =====================================================
 
     @Override
     @Transactional(readOnly = true)
@@ -186,6 +205,10 @@ public class AdminServiceImpl implements AdminService {
                 .toList();
     }
 
+    // =====================================================
+    // Search Students By Name
+    // =====================================================
+
     @Override
     @Transactional(readOnly = true)
     public List<StudentResponse> searchStudentsByName(String name) {
@@ -197,6 +220,10 @@ public class AdminServiceImpl implements AdminService {
                 .map(studentMapper::toResponse)
                 .toList();
     }
+
+    // =====================================================
+    // Create Course
+    // =====================================================
 
     @Override
     @Transactional
@@ -219,6 +246,10 @@ public class AdminServiceImpl implements AdminService {
 
         return courseMapper.toResponse(savedCourse);
     }
+
+    // =====================================================
+    // Update Course
+    // =====================================================
 
     @Override
     @Transactional
@@ -258,6 +289,10 @@ public class AdminServiceImpl implements AdminService {
         return courseMapper.toResponse(updatedCourse);
     }
 
+    // =====================================================
+    // Get Course By Id
+    // =====================================================
+
     @Override
     @Transactional(readOnly = true)
     public CourseResponse getCourseById(Long courseId) {
@@ -266,6 +301,10 @@ public class AdminServiceImpl implements AdminService {
 
         return courseMapper.toResponse(getCourse(courseId));
     }
+
+    // =====================================================
+    // Get All Courses
+    // =====================================================
 
     @Override
     @Transactional(readOnly = true)
@@ -279,6 +318,10 @@ public class AdminServiceImpl implements AdminService {
                 .toList();
     }
 
+    // =====================================================
+    // Delete Course
+    // =====================================================
+
     @Override
     @Transactional
     public void deleteCourse(Long id) {
@@ -291,6 +334,10 @@ public class AdminServiceImpl implements AdminService {
 
         log.info("Course deleted successfully.");
     }
+
+    // =====================================================
+    // Assign Course To Student
+    // =====================================================
 
     @Override
     @Transactional
@@ -314,6 +361,10 @@ public class AdminServiceImpl implements AdminService {
         log.info("Course assigned successfully.");
     }
 
+    // =====================================================
+    // Get Students By Course
+    // =====================================================
+
     @Override
     @Transactional(readOnly = true)
     public List<StudentResponse> getStudentsByCourse(Long courseId) {
@@ -330,7 +381,9 @@ public class AdminServiceImpl implements AdminService {
 
 
 
-
+    // =====================================================
+    // Find Student By Id
+    // =====================================================
     private Student getStudent(Long id) {
 
         return studentRepository.findById(id)
@@ -339,6 +392,10 @@ public class AdminServiceImpl implements AdminService {
                                 "Student not found with id : " + id
                         ));
     }
+
+    // =====================================================
+    // Find Course By Id
+    // =====================================================
 
     private Course getCourse(Long id) {
 

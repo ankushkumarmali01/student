@@ -78,12 +78,4 @@ public class StudentController {
 
         return ResponseEntity.ok(response);
     }
-
-    @GetMapping("/welcome")
-    public ResponseEntity<String> welcome(Authentication authentication) {
-
-        return ResponseEntity.ok(
-                "Welcome " + authentication.getName()
-        );
-    }
 }
