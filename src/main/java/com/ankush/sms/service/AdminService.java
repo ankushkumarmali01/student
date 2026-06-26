@@ -5,6 +5,7 @@ import com.ankush.sms.dto.request.CourseRequest;
 import com.ankush.sms.dto.request.StudentRequest;
 import com.ankush.sms.dto.response.CourseResponse;
 import com.ankush.sms.dto.response.LoginResponse;
+import com.ankush.sms.dto.response.PageResponse;
 import com.ankush.sms.dto.response.StudentResponse;
 
 import java.util.List;
@@ -21,9 +22,22 @@ public interface AdminService {
 
     StudentResponse getStudentById(Long id);
 
-    List<StudentResponse> getAllStudents();
+//    List<StudentResponse> getAllStudents();
 
-    List<StudentResponse> searchStudentsByName(String name);
+    PageResponse<StudentResponse> getAllStudents(
+            int page,
+            int size,
+            String sortBy,
+            String direction);
+
+//    List<StudentResponse> searchStudentsByName(String name);
+
+    PageResponse<StudentResponse> searchStudentsByName(
+            String name,
+            int page,
+            int size,
+            String sortBy,
+            String direction);
 
     CourseResponse createCourse(CourseRequest request);
 
