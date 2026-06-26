@@ -5,6 +5,7 @@ import com.ankush.sms.dto.request.CourseRequest;
 import com.ankush.sms.dto.request.StudentRequest;
 import com.ankush.sms.dto.response.CourseResponse;
 import com.ankush.sms.dto.response.LoginResponse;
+import com.ankush.sms.dto.response.PageResponse;
 import com.ankush.sms.dto.response.StudentResponse;
 import com.ankush.sms.entity.Course;
 import com.ankush.sms.entity.Student;
@@ -20,6 +21,10 @@ import com.ankush.sms.security.JwtService;
 import com.ankush.sms.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -193,32 +198,103 @@ public class AdminServiceImpl implements AdminService {
     // Get All Students
     // =====================================================
 
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<StudentResponse> getAllStudents() {
+//
+//        log.info("Fetching all students.");
+//
+//        return studentRepository.findAll()
+//                .stream()
+//                .map(studentMapper::toResponse)
+//                .toList();
+//    }
+
     @Override
     @Transactional(readOnly = true)
-    public List<StudentResponse> getAllStudents() {
+    public PageResponse<StudentResponse> getAllStudents(
+            int page,
+            int size,
+            String sortBy,
+            String direction) {
 
-        log.info("Fetching all students.");
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
 
-        return studentRepository.findAll()
-                .stream()
-                .map(studentMapper::toResponse)
-                .toList();
+        Pageable pageable =
+                PageRequest.of(page, size, sort);
+
+        Page<Student> studentPage =
+                studentRepository.findAll(pageable);
+
+        List<StudentResponse> students =
+                studentPage.getContent()
+                        .stream()
+                        .map(studentMapper::toResponse)
+                        .toList();
+
+        return PageResponse.<StudentResponse>builder()
+                .content(students)
+                .page(studentPage.getNumber())
+                .size(studentPage.getSize())
+                .totalElements(studentPage.getTotalElements())
+                .totalPages(studentPage.getTotalPages())
+                .last(studentPage.isLast())
+                .build();
     }
 
     // =====================================================
     // Search Students By Name
     // =====================================================
 
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<StudentResponse> searchStudentsByName(String name) {
+//
+//        log.info("Searching students with name : {}", name);
+//
+//        return studentRepository.findByNameContainingIgnoreCase(name)
+//                .stream()
+//                .map(studentMapper::toResponse)
+//                .toList();
+//    }
+
     @Override
     @Transactional(readOnly = true)
-    public List<StudentResponse> searchStudentsByName(String name) {
+    public PageResponse<StudentResponse> searchStudentsByName(
+            String name,
+            int page,
+            int size,
+            String sortBy,
+            String direction) {
 
-        log.info("Searching students with name : {}", name);
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
 
-        return studentRepository.findByNameContainingIgnoreCase(name)
-                .stream()
-                .map(studentMapper::toResponse)
-                .toList();
+        Pageable pageable =
+                PageRequest.of(page, size, sort);
+
+        Page<Student> studentPage =
+                studentRepository.findByNameContainingIgnoreCase(
+                        name,
+                        pageable);
+
+        List<StudentResponse> students =
+                studentPage.getContent()
+                        .stream()
+                        .map(studentMapper::toResponse)
+                        .toList();
+
+        return PageResponse.<StudentResponse>builder()
+                .content(students)
+                .page(studentPage.getNumber())
+                .size(studentPage.getSize())
+                .totalElements(studentPage.getTotalElements())
+                .totalPages(studentPage.getTotalPages())
+                .last(studentPage.isLast())
+                .build();
     }
 
     // =====================================================

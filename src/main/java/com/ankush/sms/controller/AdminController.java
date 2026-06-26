@@ -5,6 +5,7 @@ import com.ankush.sms.dto.request.CourseRequest;
 import com.ankush.sms.dto.request.StudentRequest;
 import com.ankush.sms.dto.response.CourseResponse;
 import com.ankush.sms.dto.response.LoginResponse;
+import com.ankush.sms.dto.response.PageResponse;
 import com.ankush.sms.dto.response.StudentResponse;
 import com.ankush.sms.service.AdminService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,22 +68,54 @@ public class AdminController {
     }
 
     @Operation(summary = "Get All Students")
+//    @GetMapping("/students")
+//    public ResponseEntity<List<StudentResponse>> getAllStudents() {
+//
+//        return ResponseEntity.ok(
+//                adminService.getAllStudents()
+//        );
+//    }
+
     @GetMapping("/students")
-    public ResponseEntity<List<StudentResponse>> getAllStudents() {
+    public ResponseEntity<PageResponse<StudentResponse>> getAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
 
         return ResponseEntity.ok(
-                adminService.getAllStudents()
-        );
+                adminService.getAllStudents(
+                        page,
+                        size,
+                        sortBy,
+                        direction));
     }
 
     @Operation(summary = "Search Students by Name")
+//    @GetMapping("/students/search")
+//    public ResponseEntity<List<StudentResponse>> searchStudents(
+//            @RequestParam String name) {
+//
+//        return ResponseEntity.ok(
+//                adminService.searchStudentsByName(name)
+//        );
+//    }
+
     @GetMapping("/students/search")
-    public ResponseEntity<List<StudentResponse>> searchStudents(
-            @RequestParam String name) {
+    public ResponseEntity<PageResponse<StudentResponse>> searchStudents(
+            @RequestParam String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
 
         return ResponseEntity.ok(
-                adminService.searchStudentsByName(name)
-        );
+                adminService.searchStudentsByName(
+                        name,
+                        page,
+                        size,
+                        sortBy,
+                        direction));
     }
 
     @Operation(summary = "Delete Student")
